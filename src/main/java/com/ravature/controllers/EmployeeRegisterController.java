@@ -13,7 +13,9 @@ import com.ravature.service.EmployeeService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-public class RegisterController implements HttpHandler {
+public class EmployeeRegisterController implements HttpHandler {
+
+  private final EmployeeService empService = new EmployeeService();
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
@@ -22,16 +24,20 @@ public class RegisterController implements HttpHandler {
 
     switch (verb) {
       case "POST":
-        postRequest(exchange);
-
+        postRequestCreateNewEmployeeAccount(exchange);
         break;
+
+      // case "GET":
+      //   getRequest(exchange);
+      //   break;
 
       default:
         break;
     }
   }
 
-  private void postRequest(HttpExchange exchange) throws IOException {
+
+  private void postRequestCreateNewEmployeeAccount(HttpExchange exchange) throws IOException {
     // InputStream has a bunch of bytes
     InputStream is = exchange.getRequestBody();
 
@@ -52,13 +58,12 @@ public class RegisterController implements HttpHandler {
       }
     }
 
-    exchange.sendResponseHeaders(200, texBuilder.toString().getBytes().length);
+    String result = empService.saveToEmployeeRepository(texBuilder.toString());
 
-    EmployeeService empService = new EmployeeService();
-    empService.saveToEmpList(texBuilder.toString());
+    exchange.sendResponseHeaders(200, result.getBytes().length);
 
     OutputStream os = exchange.getResponseBody();
-    os.write(texBuilder.toString().getBytes());
+    os.write(result.getBytes());
     os.close();
 
   }

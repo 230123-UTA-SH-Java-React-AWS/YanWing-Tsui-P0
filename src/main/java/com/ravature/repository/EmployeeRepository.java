@@ -3,48 +3,105 @@ package com.ravature.repository;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.ravature.model.Employee;
+import com.ravature.utils.ConnectionUtil;
 
 public class EmployeeRepository {
 
   // create a method in EmployeeRepository for interacting with a database and
   // sending or receiving information form the database
-  public void save(Employee employee) {
-    ObjectMapper mapper = new ObjectMapper();
-    String jsonObject = "";
+  
+  //this method is to save register input to the database
+  public String saveEmployeeToDB(Employee employee) {
 
-    try {
-      // Converted the employee object into json
-      jsonObject = mapper.writeValueAsString(employee);
+    // call existingEmail method
+    String email = employee.getUserEmail();
+    if (getEmployeeByEmail(email) != null) {
+      return "Email have been used! Please use another email";
+    }
 
-      // Save the json into a file
-      // File constructor needs a String that holds the path of where you want to save
-      // the file
-      File empFile = new File(
-          "C:\\Users\\yanwi\\Documents\\Revature\\Project\\project0\\src\\main\\java\\com\\ravature\\repository\\employee.json");
-      empFile.createNewFile();
+    //set sql code to sql and will call it to run it in sql
+    String sql = "insert into employee  (empFName , empLName , empEmail , empPassword, empRole) values (?, ?, ?, ?, ?)";
 
-      // Writing the file
-      FileWriter writer = new FileWriter(
-          "C:\\Users\\yanwi\\Documents\\Revature\\Project\\project0\\src\\main\\java\\com\\ravature\\repository\\employee.json");
-      writer.write(jsonObject);// Write the String into the file
-      writer.close();
 
-    } catch (JsonGenerationException e) {
-      // TODO: handle exception
-      e.printStackTrace();
-    } catch (JsonMappingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
+    try (Connection con = ConnectionUtil.getConnection()) {
+      // preparedstatement is to let the database run the sql code we provide with no
+      // values which mean we have to provide the values
+      PreparedStatement prstmt = con.prepareStatement(sql);
+
+      prstmt.setString(1, employee.getUserFName());
+      prstmt.setString(2, employee.getUserLName());
+      prstmt.setString(3, employee.getUserEmail());
+      prstmt.setString(4, employee.getUserPassword());
+      prstmt.setString(5, employee.getUserRole());
+
+      // execute() method does not expect to return anthing from the statement
+      // excutQuery() method does expect something to result after executing the
+      // statement
+      prstmt.execute();
+
+    } catch (Exception e) {
       e.printStackTrace();
     }
+
+    return "Register Sucessfully! Waiting for Approval!!";
+  }
+
+  public Employee getEmployeeByEmail(String email) {
+    // creat list to save the employee list you want
+    List<Employee> empList = new ArrayList<>();
+    // set employee to null in order to get email does not exit in the table
+    Employee employee = null;
+
+    // SQL code for looking employee by email
+    String sql = "select * from employee where empemail = ?";
+
+    // Connection
+    try (Connection con = ConnectionUtil.getConnection()) {
+      // preparedstatement is to let the database run the sql code we provide with no
+      // values which mean we have to provide the values
+      PreparedStatement prstmt = con.prepareStatement(sql);
+
+      // get the email from the user
+      prstmt.setString(1, email);
+
+      // execute to save the register information to the connection of database and
+      // set it to resultSet for get the data
+      ResultSet rs = prstmt.executeQuery();
+
+      while (rs.next()) {
+        Employee newEmployee = new Employee();
+
+        newEmployee.setEmpID(rs.getInt(1));
+        newEmployee.setUserFName(rs.getString(2));
+        newEmployee.setUserLName(rs.getString(3));
+        newEmployee.setUserEmail(rs.getString(4));
+        newEmployee.setUserPassword(rs.getString(5));
+        empList.add(newEmployee);
+      }
+    } catch (SQLException e) {
+      // TODO: handle exception
+      e.printStackTrace();
+    }
+
+    if (empList.size() > 0) {
+      employee = empList.get(0);
+    }
+
+    return employee;
   }
 
 }

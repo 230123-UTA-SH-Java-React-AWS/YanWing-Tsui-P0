@@ -2,10 +2,9 @@ package com.ravature;
 
 import java.net.InetSocketAddress;
 
-import com.ravature.controllers.RegisterController;
+import com.ravature.controllers.EmployeeRegisterController;
 import com.ravature.model.Employee;
 import com.ravature.repository.EmployeeRepository;
-
 import com.sun.net.httpserver.HttpServer;
 
 /**
@@ -25,7 +24,8 @@ public final class App {
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
-        server.createContext("/employee", new RegisterController());
+        server.createContext("/employeeRegister", new EmployeeRegisterController());
+
 
         server.setExecutor(null);
         server.start();

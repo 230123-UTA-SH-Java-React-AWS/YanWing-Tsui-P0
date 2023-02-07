@@ -1,52 +1,22 @@
 package com.ravature.model;
 
-public class Manager {
+public class Manager extends User {
 
-  private int managerID;
+  private int manaId;
 
-  private String firstName;
-  private String lastName;
-  private String email;
-  private String password;
+  // deflault contruction
+  public Manager() {
+    super();
+    userRole = "MANAGER";
+  }
 
+  // Setter and Getter
   public int getManagerID() {
-    return managerID;
+    return manaId;
   }
 
   public void setManagerID(int managerID) {
-    this.managerID = managerID;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
+    this.manaId = managerID;
   }
 
 }
