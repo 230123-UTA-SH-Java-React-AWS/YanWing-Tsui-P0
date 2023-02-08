@@ -1,10 +1,14 @@
 package com.revature.service;
 
 import java.io.IOException;
+import java.util.List;
+
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.revature.model.Employee;
+import com.revature.model.User;
 import com.revature.repository.EmployeeRepository;
 
 public class EmployeeService {
@@ -30,6 +34,23 @@ public class EmployeeService {
 
     return reuslt;
     
+  }
+
+  public String getAllUser(){
+    List<User> listOfUser = empRepo.getAllUser();
+
+    String jsonString = "";
+    try{
+        jsonString = mapper.writeValueAsString(listOfUser);
+    }catch (JsonMappingException e){
+      e.printStackTrace();
+    }catch (JsonGenerationException e){
+      e.printStackTrace();
+    }catch (IOException e){
+      e.printStackTrace();
+    }
+
+    return jsonString;
   }
 
 }

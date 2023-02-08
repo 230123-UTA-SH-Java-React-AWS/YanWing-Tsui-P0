@@ -17,6 +17,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.revature.model.Employee;
+import com.revature.model.User;
 import com.revature.utils.ConnectionUtil;
 
 public class EmployeeRepository {
@@ -63,7 +64,7 @@ public class EmployeeRepository {
 
   public Employee getEmployeeByUsername(String username) {
     // creat list to save the employee list you want
-    List<Employee> empList = new ArrayList<>();
+    List<Employee> listOfEmp = new ArrayList<>();
     // set employee to null in order to get email does not exit in the table
     Employee employee = null;
 
@@ -92,18 +93,49 @@ public class EmployeeRepository {
         newEmployee.setUsername(rs.getString(4));
         newEmployee.setUserEmail(rs.getString(5));
         newEmployee.setUserPassword(rs.getString(6));
-        empList.add(newEmployee);
+        listOfEmp.add(newEmployee);
       }
     } catch (SQLException e) {
       // TODO: handle exception
       e.printStackTrace();
     }
 
-    if (empList.size() > 0) {
-      employee = empList.get(0);
+    if (listOfEmp.size() > 0) {
+      employee = listOfEmp.get(0);
     }
 
     return employee;
   }
 
+  public List<User> getAllUser(){
+
+    String sql = "select * from employee";
+    List<User> listOfUser = new ArrayList<User>();
+
+    try(Connection con = ConnectionUtil.getConnection()){
+      Statement stmt = con.createStatement();
+
+      ResultSet rs = stmt.executeQuery(sql);
+
+      while (rs.next()) {
+        User newUser = new User();
+
+        newUser.setUserId(rs.getInt(1));
+        newUser.setUserFName(rs.getString(2));
+        newUser.setUserLName(rs.getString(3));
+        newUser.setUserEmail(rs.getString(4));
+        newUser.setUsername(rs.getString(5));
+        newUser.setUserPassword(rs.getString(6));
+        newUser.setUserRole(rs.getString(7));
+
+        listOfUser.add(newUser);
+
+      }
+    }catch (Exception e){
+      e.printStackTrace();
+    }
+
+    return listOfUser;
+    
+  }
 }

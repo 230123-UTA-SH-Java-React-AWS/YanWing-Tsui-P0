@@ -9,6 +9,12 @@ public class Ticket {
   private String ticketDescription;
   private String ticketStatus;
 
+  @Override
+  public String toString() {
+    return "Ticket [manId=" + manId + ", ticketId=" + ticketId + ", empId=" + empId + ", ticketAmount=" + ticketAmount
+        + ", ticketDescription=" + ticketDescription + ", ticketStatus=" + ticketStatus + "]";
+  }
+
   public Ticket() {
     ticketStatus = "PENDDING";
   }

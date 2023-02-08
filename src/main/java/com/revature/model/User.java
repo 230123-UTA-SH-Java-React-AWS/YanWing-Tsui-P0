@@ -9,7 +9,7 @@ public class User {
   private String userPassword;
   protected String userRole;
 
-  protected User() {
+  public User() {
     userRole = "EMPLOYEE";
   }
 
@@ -73,4 +73,5 @@ public class User {
 
 }
 
-//{"userFName":"YanWnig","userLName":"Tsui","userEmail":"YWT1@gmail.com","username": "Yanwingtsui018", "userPassword": "123456789", "userRole": "MANAGER"}
+// {"userFName":"YanWnig","userLName":"Tsui","userEmail":"YWT1@gmail.com","username":
+// "Yanwingtsui018", "userPassword": "123456789", "userRole": "MANAGER"}

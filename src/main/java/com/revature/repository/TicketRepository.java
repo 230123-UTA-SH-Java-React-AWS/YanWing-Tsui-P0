@@ -1,8 +1,12 @@
 package com.revature.repository;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.revature.model.Ticket;
 import com.revature.utils.ConnectionUtil;
@@ -37,5 +41,70 @@ public class TicketRepository {
     }
     return "Ticket Submitted, Waiting for approval";
   }
+
+ 
+
+  public List<Ticket> FindPreviousSubmission(int userId){
+
+    List<Ticket> listOfTicket = new ArrayList<>();
+
+    String sql = "select * from ticket where empid = ?";
+
+    try(Connection con = ConnectionUtil.getConnection()){
+
+      PreparedStatement prstmt = con.prepareStatement(sql);
+
+      prstmt.setInt(1, userId);
+
+      ResultSet rs = prstmt.executeQuery();
+
+      while (rs.next()) {
+        Ticket newTicket = new Ticket();
+
+        newTicket.setEmpId(rs.getInt(1));
+        newTicket.setTicketId(rs.getInt(2));
+        newTicket.setTicketAmount(rs.getFloat(3));
+        newTicket.setTicketDescription(rs.getString(4));
+        newTicket.setTicketStatus(rs.getString(5));
+
+        listOfTicket.add(newTicket);
+      }
+    }catch (SQLException e) {
+      // TODO: handle exception
+      e.printStackTrace();
+    }
+
+    return listOfTicket;
+  }
+
+  public List<Ticket> GetAllPedding(){
+    String sql = "select * from ticket where ticketstatus = 'PENDDING'";
+
+        List<Ticket> listOfTickets = new ArrayList<Ticket>();
+
+        try(Connection con = ConnectionUtil.getConnection()){
+
+            Statement stmt = con.createStatement();
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while(rs.next()) {
+                Ticket newTicket = new Ticket();
+                
+                newTicket.setTicketId(rs.getInt(1));
+                newTicket.setEmpId(rs.getInt(2));
+                newTicket.setTicketAmount(rs.getFloat(3));
+                newTicket.setTicketDescription(rs.getString(4));
+                newTicket.setTicketStatus(rs.getString(5));
+
+                listOfTickets.add(newTicket);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return listOfTickets;
+    }
+  }
   
-}
