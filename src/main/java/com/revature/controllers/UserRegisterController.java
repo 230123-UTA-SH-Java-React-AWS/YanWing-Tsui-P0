@@ -1,4 +1,4 @@
-package com.ravature.controllers;
+package com.revature.controllers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,11 +9,11 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import com.ravature.service.EmployeeService;
+import com.revature.service.EmployeeService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-public class EmployeeRegisterController implements HttpHandler {
+public class UserRegisterController implements HttpHandler {
 
   private final EmployeeService empService = new EmployeeService();
 
@@ -21,19 +21,27 @@ public class EmployeeRegisterController implements HttpHandler {
   public void handle(HttpExchange exchange) throws IOException {
     // TODO Auto-generated method stub
     String verb = exchange.getRequestMethod();
-
+    String response = "";
     switch (verb) {
       case "POST":
         postRequestCreateNewEmployeeAccount(exchange);
         break;
-
-      // case "GET":
-      //   getRequest(exchange);
-      //   break;
+      
+      case "GET":
+        response = "This is Register Page!";
+        exchange.sendResponseHeaders(200, response.getBytes().length);
+        break;
 
       default:
+        response = "Wrong HTTP Verb";
+        exchange.sendResponseHeaders(404,response.getBytes().length);
         break;
     }
+
+    OutputStream os = exchange.getResponseBody();
+    os.write(response.getBytes());
+    os.close();
+
   }
 
 

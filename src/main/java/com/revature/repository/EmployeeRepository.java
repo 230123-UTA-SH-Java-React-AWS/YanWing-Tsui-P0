@@ -1,4 +1,4 @@
-package com.ravature.repository;
+package com.revature.repository;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,8 +16,8 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.ravature.model.Employee;
-import com.ravature.utils.ConnectionUtil;
+import com.revature.model.Employee;
+import com.revature.utils.ConnectionUtil;
 
 public class EmployeeRepository {
 
@@ -28,13 +28,13 @@ public class EmployeeRepository {
   public String saveEmployeeToDB(Employee employee) {
 
     // call existingEmail method
-    String email = employee.getUserEmail();
-    if (getEmployeeByEmail(email) != null) {
+    String username = employee.getUsername();
+    if (getEmployeeByUsername(username) != null) {
       return "Email have been used! Please use another email";
     }
 
     //set sql code to sql and will call it to run it in sql
-    String sql = "insert into employee  (empFName , empLName , empEmail , empPassword, empRole) values (?, ?, ?, ?, ?)";
+    String sql = "insert into employee  (empFName , empLName , empEmail , empUsername, empPassword, empRole) values (?, ?, ?, ?, ?, ?)";
 
 
     try (Connection con = ConnectionUtil.getConnection()) {
@@ -45,8 +45,9 @@ public class EmployeeRepository {
       prstmt.setString(1, employee.getUserFName());
       prstmt.setString(2, employee.getUserLName());
       prstmt.setString(3, employee.getUserEmail());
-      prstmt.setString(4, employee.getUserPassword());
-      prstmt.setString(5, employee.getUserRole());
+      prstmt.setString(4, employee.getUsername());
+      prstmt.setString(5, employee.getUserPassword());
+      prstmt.setString(6, employee.getUserRole());
 
       // execute() method does not expect to return anthing from the statement
       // excutQuery() method does expect something to result after executing the
@@ -60,14 +61,14 @@ public class EmployeeRepository {
     return "Register Sucessfully! Waiting for Approval!!";
   }
 
-  public Employee getEmployeeByEmail(String email) {
+  public Employee getEmployeeByUsername(String username) {
     // creat list to save the employee list you want
     List<Employee> empList = new ArrayList<>();
     // set employee to null in order to get email does not exit in the table
     Employee employee = null;
 
     // SQL code for looking employee by email
-    String sql = "select * from employee where empemail = ?";
+    String sql = "select * from employee where empUsername = ?";
 
     // Connection
     try (Connection con = ConnectionUtil.getConnection()) {
@@ -76,7 +77,7 @@ public class EmployeeRepository {
       PreparedStatement prstmt = con.prepareStatement(sql);
 
       // get the email from the user
-      prstmt.setString(1, email);
+      prstmt.setString(1, username);
 
       // execute to save the register information to the connection of database and
       // set it to resultSet for get the data
@@ -85,11 +86,12 @@ public class EmployeeRepository {
       while (rs.next()) {
         Employee newEmployee = new Employee();
 
-        newEmployee.setEmpID(rs.getInt(1));
+        newEmployee.setUserId(rs.getInt(1));
         newEmployee.setUserFName(rs.getString(2));
         newEmployee.setUserLName(rs.getString(3));
-        newEmployee.setUserEmail(rs.getString(4));
-        newEmployee.setUserPassword(rs.getString(5));
+        newEmployee.setUsername(rs.getString(4));
+        newEmployee.setUserEmail(rs.getString(5));
+        newEmployee.setUserPassword(rs.getString(6));
         empList.add(newEmployee);
       }
     } catch (SQLException e) {

@@ -1,4 +1,4 @@
-package com.ravature.service;
+package com.revature.service;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.ravature.model.Employee;
-import com.ravature.repository.EmployeeRepository;
+import com.revature.model.Employee;
+import com.revature.repository.EmployeeRepository;
 
 public class EmployeeService {
 
