@@ -2,13 +2,14 @@ package com.revature.model;
 
 public class Ticket {
   // id for ticket
+  private int manId;
   private int ticketId;
   private int empId;
-  private int ticketAmount;
+  private float ticketAmount;
   private String ticketDescription;
   private String ticketStatus;
 
-  public Ticket(){
+  public Ticket() {
     ticketStatus = "PENDDING";
   }
 
@@ -20,6 +21,14 @@ public class Ticket {
     this.ticketId = ticketId;
   }
 
+  public int getManId() {
+    return manId;
+  }
+
+  public void setManId(int manId) {
+    this.manId = manId;
+  }
+
   public int getEmpId() {
     return empId;
   }
@@ -28,11 +37,11 @@ public class Ticket {
     this.empId = empId;
   }
 
-  public int getTicketAmount() {
+  public float getTicketAmount() {
     return ticketAmount;
   }
 
-  public void setTicketAmount(int ticketAmount) {
+  public void setTicketAmount(float ticketAmount) {
     this.ticketAmount = ticketAmount;
   }
 
@@ -51,7 +60,5 @@ public class Ticket {
   public void setTicketStatus(String ticketStatus) {
     this.ticketStatus = ticketStatus;
   }
-
-  
 
 }

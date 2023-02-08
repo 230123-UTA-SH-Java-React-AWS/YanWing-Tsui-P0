@@ -2,6 +2,7 @@ package com.revature;
 
 import java.net.InetSocketAddress;
 
+import com.revature.controllers.SubmitTicketController;
 import com.revature.controllers.UserLoginController;
 import com.revature.controllers.UserRegisterController;
 import com.revature.model.Employee;
@@ -28,6 +29,8 @@ public final class App {
         server.createContext("/Register", new UserRegisterController());
 
         server.createContext("/Login", new UserLoginController());
+
+        server.createContext("/TicketSubmition", new SubmitTicketController());
 
 
         server.setExecutor(null);

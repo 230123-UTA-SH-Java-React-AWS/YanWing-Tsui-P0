@@ -1,11 +1,6 @@
 package com.revature.service;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 

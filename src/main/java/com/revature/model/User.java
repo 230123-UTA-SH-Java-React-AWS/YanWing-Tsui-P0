@@ -72,3 +72,5 @@ public class User {
   }
 
 }
+
+//{"userFName":"YanWnig","userLName":"Tsui","userEmail":"YWT1@gmail.com","username": "Yanwingtsui018", "userPassword": "123456789", "userRole": "MANAGER"}
