@@ -147,7 +147,6 @@ public class EmployeeRepository {
             ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
-                User newUser = new User();
 
                 listOfUser.add(rs.getString(2));
                 listOfUser.add(rs.getString(3));

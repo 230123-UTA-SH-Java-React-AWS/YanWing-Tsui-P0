@@ -1,9 +1,14 @@
 package com.revature.service;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonNode;
@@ -11,12 +16,14 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.BooleanNode;
 
 import com.revature.model.Employee;
 import com.revature.model.Ticket;
 import com.revature.model.User;
 import com.revature.repository.EmployeeRepository;
 import com.revature.repository.TicketRepository;
+import com.revature.utils.ConnectionUtil;
 
 public class TicketService {
   public final EmployeeRepository empRpo = new EmployeeRepository();
@@ -59,13 +66,13 @@ public class TicketService {
       String usernameNode = treeNode.get("username").asText();
 
       if (empRpo.checkManager(usernameNode)) {
-        if (empRpo.getAllUser().contains(usernameNode)) {
-          ArrayList<Ticket> listOfTicket = new ArrayList<>();
-          listOfTicket = ticketrepo.getPendingTicket();
-          response = mapper.writeValueAsString(listOfTicket);
-        } else {
-          return "You are not our employee or manager!";
-        }
+        // if (empRpo.getAllUser().contains(usernameNode)) {
+        ArrayList<Ticket> listOfTicket = new ArrayList<>();
+        listOfTicket = ticketrepo.getPendingTicket();
+        response = mapper.writeValueAsString(listOfTicket);
+        // }
+        // else {
+        // return "You are not our employee or manager!";}
       } else {
         return "Only manager can view ticket table!";
       }
@@ -92,10 +99,12 @@ public class TicketService {
         response = mapper.writeValueAsString(listOfTicket);
         return response;
       } else {
+
+        
         ArrayList<Ticket> listOfTicket = ticketrepo.getChoiceTicket(myNode);
         response = mapper.writeValueAsString(listOfTicket);
         return response;
-      }
+        }
     } catch (JsonProcessingException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -110,23 +119,23 @@ public class TicketService {
     try {
       JsonNode myNode = mapper.readTree(ticketString);
       String userNode = myNode.get("username").asText();
-      
+
       boolean result = false;
-      
+
       JsonNode idNode = myNode.get("ticketid");
       int s = idNode.getIntValue();
-      result = getStatusbyId(s);
-      JsonNode newStateNode = myNode.get
-      ("status");
+      boolean result1 = getStatusbyId(s);
+      JsonNode newStateNode = myNode.get("status");
 
       String x = newStateNode.getTextValue().toUpperCase();
       String y = "PENDING";
-      if(x == y){
-        result = true;
-      }
-      
+      System.out.println(x);
+      System.out.println(y);
+      System.out.println(s);
+
       if (empRpo.checkManager(userNode)) {
-        if (result == true) {
+
+        if (result1 == true) {
           result = ticketrepo.Update(myNode);
           return "Ticket has been updated";
         } else {
@@ -149,6 +158,36 @@ public class TicketService {
   }
 
   private boolean getStatusbyId(int s) {
+    System.out.println("=============hhh===========");
+    System.out.println(s);
+    String sql = "select status from ticket where ticketid = ?";
+    String response = "";
+
+    String listOfTickets = "new ArrayList<>()";
+
+    try (Connection con = ConnectionUtil.getConnection()) {
+      PreparedStatement prstmt = con.prepareStatement(sql);
+      prstmt.setInt(1, s);
+
+      ResultSet rs = prstmt.executeQuery();
+
+      while (rs.next()) {
+        Ticket newTicket = new Ticket();
+
+        newTicket.setStatus(rs.getString(1));
+
+        
+      }
+
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  
+    
+
+    System.out.println(listOfTickets.toString());
+
     return false;
   }
 

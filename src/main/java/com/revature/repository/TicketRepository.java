@@ -52,7 +52,7 @@ public class TicketRepository {
 
     try (Connection con = ConnectionUtil.getConnection()) {
       PreparedStatement prstmt = con.prepareStatement(sql);
-      prstmt.setString(1, "Pending");
+      prstmt.setString(1, "PENDING");
       ResultSet rs = prstmt.executeQuery();
 
       while (rs.next()) {
