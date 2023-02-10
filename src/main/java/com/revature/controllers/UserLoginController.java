@@ -34,6 +34,7 @@ public class UserLoginController implements HttpHandler {
         case "GET":
           response = "This is Login Page!!";
           exchange.sendResponseHeaders(200, response.getBytes().length);
+          break;
         default:
           response = "Wrong HTTP Verb";
           exchange.sendResponseHeaders(404,response.getBytes().length);

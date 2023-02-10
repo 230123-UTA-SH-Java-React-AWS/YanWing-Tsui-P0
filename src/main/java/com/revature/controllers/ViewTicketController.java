@@ -9,30 +9,34 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+
 import com.revature.service.TicketService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-public class ViewPreviousSubmission implements HttpHandler {
+public class ViewTicketController implements HttpHandler {
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
-
+    // TODO Auto-generated method stub
     String verb = exchange.getRequestMethod();
 
     switch (verb) {
       case "POST":
         postRequest(exchange);
+
         break;
+
       default:
         break;
     }
+
   }
 
   private void postRequest(HttpExchange exchange) throws IOException {
 
     InputStream is = exchange.getRequestBody();
-
+    String response;
     StringBuilder textbuilder = new StringBuilder();
 
     try (
@@ -44,16 +48,13 @@ public class ViewPreviousSubmission implements HttpHandler {
       }
     }
 
-    String response;
-
     TicketService ticketService = new TicketService();
-    response = ticketService.viewMyTicket(textbuilder.toString());
-    exchange.sendResponseHeaders(200, response.getBytes().length);
 
+    response = ticketService.viewTicket(textbuilder.toString());
+
+    exchange.sendResponseHeaders(200, response.getBytes().length);
     OutputStream os = exchange.getResponseBody();
     os.write(response.getBytes());
     os.close();
-
   }
-
 }

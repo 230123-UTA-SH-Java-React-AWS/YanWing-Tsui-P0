@@ -49,12 +49,9 @@ public class EmployeeLoginRepository {
         Employee newEmployee = new Employee();
 
         newEmployee.setUserId(rs.getInt(1));
-        newEmployee.setUserFName(rs.getString(2));
-        newEmployee.setUserLName(rs.getString(3));
-        newEmployee.setUserEmail(rs.getString(4));
-        newEmployee.setUsername(rs.getString(5));
-        newEmployee.setUserPassword(rs.getString(6));
-        newEmployee.setUserRole(rs.getString(7));
+        newEmployee.setUsername(rs.getString(2));
+        newEmployee.setUserPassword(rs.getString(3));
+        newEmployee.setUserRole(rs.getString(4));
 
         empList.add(newEmployee);
       }

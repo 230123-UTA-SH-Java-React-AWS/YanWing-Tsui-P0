@@ -1,53 +1,34 @@
 package com.revature.model;
 
+import java.math.BigDecimal;
+
 public class Ticket {
   // id for ticket
-  private int manId;
-  private int ticketId;
-  private int empId;
-  private float ticketAmount;
+  private BigDecimal ticketAmount;
   private String ticketDescription;
-  private String ticketStatus;
+  private String username;
+  private int ticketID;
+  private String status = "PENDING";
 
-  @Override
-  public String toString() {
-    return "Ticket [manId=" + manId + ", ticketId=" + ticketId + ", empId=" + empId + ", ticketAmount=" + ticketAmount
-        + ", ticketDescription=" + ticketDescription + ", ticketStatus=" + ticketStatus + "]";
+
+
+  public void setTicketAmount(BigDecimal ticketAmount) {
+    this.ticketAmount = ticketAmount;
   }
 
-  public Ticket() {
-    ticketStatus = "PENDDING";
+  public String getStatus() {
+    return status;
   }
 
-  public int getTicketId() {
-    return ticketId;
+  public void setStatus(String status) {
+    this.status = status;
   }
 
-  public void setTicketId(int ticketId) {
-    this.ticketId = ticketId;
-  }
-
-  public int getManId() {
-    return manId;
-  }
-
-  public void setManId(int manId) {
-    this.manId = manId;
-  }
-
-  public int getEmpId() {
-    return empId;
-  }
-
-  public void setEmpId(int empId) {
-    this.empId = empId;
-  }
-
-  public float getTicketAmount() {
+  public BigDecimal getTicketAmount() {
     return ticketAmount;
   }
 
-  public void setTicketAmount(float ticketAmount) {
+  public void setTicketAount(BigDecimal ticketAmount) {
     this.ticketAmount = ticketAmount;
   }
 
@@ -59,12 +40,22 @@ public class Ticket {
     this.ticketDescription = ticketDescription;
   }
 
-  public String getTicketStatus() {
-    return ticketStatus;
+  public String getUsername() {
+    return username;
   }
 
-  public void setTicketStatus(String ticketStatus) {
-    this.ticketStatus = ticketStatus;
+  public void setUsername(String username) {
+    this.username = username;
   }
+
+  public int getTicketID() {
+    return ticketID;
+  }
+
+  public void setTicketID(int ticketID) {
+    this.ticketID = ticketID;
+  }
+
+  
 
 }

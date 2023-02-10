@@ -2,9 +2,6 @@ package com.revature.model;
 
 public class User {
   private int userId;
-  private String userFName;
-  private String userLName;
-  private String userEmail;
   private String username;
   private String userPassword;
   protected String userRole;
@@ -21,30 +18,6 @@ public class User {
 
   public void setUserId(int userId) {
     this.userId = userId;
-  }
-
-  public String getUserFName() {
-    return userFName;
-  }
-
-  public void setUserFName(String userFName) {
-    this.userFName = userFName;
-  }
-
-  public String getUserLName() {
-    return userLName;
-  }
-
-  public void setUserLName(String userLName) {
-    this.userLName = userLName;
-  }
-
-  public String getUserEmail() {
-    return userEmail;
-  }
-
-  public void setUserEmail(String userEmail) {
-    this.userEmail = userEmail;
   }
 
   public String getUsername() {

@@ -46,6 +46,7 @@ public class SubmitTicketController implements HttpHandler {
 
   private void postRequestSubmitTicket(HttpExchange exchange) throws IOException {
     InputStream is = exchange.getRequestBody();
+    String response;
 
     StringBuilder textBuilder = new StringBuilder();
 
@@ -59,7 +60,9 @@ public class SubmitTicketController implements HttpHandler {
         }
     } 
 
-    String response = ticketService.submitTicketToRepository(textBuilder.toString());
+    TicketService ticketService1 = new TicketService();
+
+    response = ticketService1.submitTicketToRepository(textBuilder.toString());
 
     exchange.sendResponseHeaders(200, response.getBytes().length);
 
